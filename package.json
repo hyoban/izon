@@ -1,7 +1,7 @@
 {
   "name": "izon",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@8.14.1",
   "description": "Find what projects are using it",
   "author": "Stephen Zhou <hi@hyoban.cc>",
