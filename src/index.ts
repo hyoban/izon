@@ -97,7 +97,7 @@ export async function getDependents(
     result: [],
     nextUrl: `https://github.com/${githubRepo}/network/dependents`,
   }
-  let maxPage = options?.maxPage ?? 50
+  let maxPage = options?.maxPage ?? 25
   while (currentParseResult.nextUrl && maxPage-- > 0) {
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
