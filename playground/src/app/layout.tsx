@@ -9,7 +9,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Izon",
-  description: "Find what projects are using it",
+  description: "Find a github repository's dependents.",
 }
 
 export default function RootLayout({

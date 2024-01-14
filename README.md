@@ -7,10 +7,7 @@
 [![License][license-src]][license-href]
 [![code style: prettier][code-style-src]][code-style-href]
 
-Find what projects are using it
-
-> [!NOTE]
-> Replace `izon`, `Find what projects are using it` and `hyoban` globally to use this template.
+Find a github repository's dependents.
 
 ## License
 
