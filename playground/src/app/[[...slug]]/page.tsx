@@ -87,7 +87,7 @@ export default function Page({
   params: { slug?: string[] }
 }) {
   console.log(slug)
-  if (!slug || (slug.length !== 1 && slug.length !== 2)) {
+  if (!slug || slug.length !== 2) {
     return (
       <>
         <p className="text-xl text-muted-foreground text-center mb-10">

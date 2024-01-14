@@ -63,23 +63,6 @@ export async function parseDependents(url: string): Promise<ParseResult> {
   }
 }
 
-async function getNpmPackageGithubRepo(packageName: string) {
-  return await $fetch<NpmPackageInfo>(
-    `https://registry.npmjs.org/${packageName}`,
-  )
-    .then(
-      (result) =>
-        // extract github repo xxx/xxx from url
-        result.repository.url.match(/github.com\/(.*)\.git/)?.[1],
-    )
-    .then((result) => {
-      if (!result && !result?.match(/^[^/]+\/[^/]+$/)) {
-        throw new Error("can not find github repo")
-      }
-      return result
-    })
-}
-
 export async function getDependents(
   target: string,
   options?: {
@@ -89,24 +72,26 @@ export async function getDependents(
     resume?: ParseResult | null
   },
 ) {
+  const user = target.split("/")[0]
+  const repo = target.split("/")[1]
+  if (!user || !repo) {
+    throw new Error("target should be like 'user/repo'")
+  }
+
   const limit = options?.limit ?? 100
   const filter = options?.filter ?? ((item) => item.stars > 0)
   let maxPage = options?.maxPage ?? 15
   const progressCache = options?.resume
 
-  const githubRepo = target.includes("/")
-    ? target
-    : await getNpmPackageGithubRepo(target)
-
   const hasCache = !!progressCache
-  if (hasCache) console.log(`use cache for ${githubRepo}`)
+  if (hasCache) console.log(`use cache for ${target}`)
 
   let finalResult: DependentInfo[] = hasCache ? progressCache.result : []
   let currentParseResult: ParseResult = {
     result: [],
     nextUrl: hasCache
       ? progressCache.nextUrl
-      : `https://github.com/${githubRepo}/network/dependents`,
+      : `https://github.com/${target}/network/dependents`,
   }
 
   while (currentParseResult.nextUrl && maxPage-- > 0) {

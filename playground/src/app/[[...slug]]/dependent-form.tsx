@@ -20,9 +20,9 @@ function Submit() {
 
 export function DependentForm() {
   return (
-    <form action={navigate} className="min-w-[36rem] flex gap-2 items-center">
+    <form action={navigate} className="min-w-96 flex gap-4 items-center">
       <Input
-        placeholder="bunchee(npm package name) or huozhi/bunchee(github repo)"
+        placeholder="Please input a github repo like user/repo"
         name="packageName"
         type="text"
         required
