@@ -24,7 +24,7 @@ function DependentTable({
   packageName: string
 }) {
   return (
-    <Table className="min-w-[30rem]">
+    <Table className="md:min-w-[30rem]">
       <TableCaption>
         <a
           href={`https://github.com/${packageName}`}
@@ -69,7 +69,6 @@ function DependentTable({
 
 async function Dependents({ packageName }: { packageName: string }) {
   const cached = await kv.get<ParseResult>(`${cachePrefix}${packageName}`)
-  if (cached) console.log(`Using cached result for ${packageName}`)
   const dependents = await getDependents(packageName, {
     resume: cached,
   })
@@ -114,7 +113,7 @@ export default function Page({
     return (
       <>
         <p className="text-xl text-muted-foreground text-center mb-10">
-          Find package's dependents
+          Find a github repository's dependents.
         </p>
         <DependentForm />
         <ExampleRepository />

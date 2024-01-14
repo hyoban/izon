@@ -20,12 +20,13 @@ function Submit() {
 
 export function DependentForm() {
   return (
-    <form action={navigate} className="min-w-96 flex gap-4 items-center">
+    <form action={navigate} className="flex gap-4 items-center">
       <Input
-        placeholder="Please input a github repo like user/repo"
+        placeholder="Input a github repo like user/repo"
         name="packageName"
         type="text"
         required
+        className="min-w-60"
       />
       <Submit />
     </form>
