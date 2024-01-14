@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import { kv } from "@vercel/kv"
 import { DependentInfo, getDependents, ParseResult } from "izon"
+import Link from "next/link"
 import { Suspense } from "react"
 
 import { DependentForm } from "./dependent-form"
@@ -81,6 +82,28 @@ async function Dependents({ packageName }: { packageName: string }) {
   )
 }
 
+async function ExampleRepository() {
+  const keys = await kv.keys(`${cachePrefix}*`)
+  return (
+    <div className="mt-6">
+      {keys
+        .filter((key) => key.includes("/"))
+        .slice(0, 5)
+        .map((key) => {
+          return (
+            <Link
+              key={key}
+              className="my-2 underline block"
+              href={`/${key.slice(cachePrefix.length)}`}
+            >
+              {key.slice(cachePrefix.length)}
+            </Link>
+          )
+        })}
+    </div>
+  )
+}
+
 export default function Page({
   params: { slug },
 }: {
@@ -94,6 +117,7 @@ export default function Page({
           Find package's dependents
         </p>
         <DependentForm />
+        <ExampleRepository />
       </>
     )
   }

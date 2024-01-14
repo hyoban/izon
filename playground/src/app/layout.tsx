@@ -2,6 +2,7 @@ import "./globals.css"
 
 import { AppearanceSwitch } from "@/components/appearance-switch"
 import { Provider } from "jotai"
+import Link from "next/link"
 
 import { ThemeProvider } from "./theme-provider"
 
@@ -24,18 +25,24 @@ export default function RootLayout({
           <Provider>
             <div className="h-full p-10 flex flex-col gap-8 items-center max-w-xl mx-auto">
               <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                Izon
+                <Link href="/">Izon</Link>
               </h1>
               <main className="flex-1">{children}</main>
-              <footer className="flex gap-4">
-                <AppearanceSwitch />
-                <a
-                  href="http://github.com/hyoban/izon"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="i-lucide-github"
-                />
-              </footer>
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex gap-4">
+                  <AppearanceSwitch />
+                  <a
+                    href="http://github.com/hyoban/izon"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="i-lucide-github"
+                  />
+                </div>
+                <footer className="opacity-50 text-sm text-center">
+                  As we can not fetch a github repository's dependents at once,
+                  so the Dependents Table may be incomplete.
+                </footer>
+              </div>
             </div>
           </Provider>
         </ThemeProvider>
