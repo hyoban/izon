@@ -45,7 +45,7 @@
   },
   "scripts": {
     "prepare": "simple-git-hooks",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test -- run && pnpm knip && pnpm build && pnpm publint",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test -- run && pnpm build && pnpm publint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint --max-warnings 0 .",

@@ -84,18 +84,21 @@ export async function getDependents(
   options?: {
     limit?: number
     filter?: (item: DependentInfo) => boolean
+    maxPage?: number
   },
 ) {
-  const limit = options?.limit ?? 100
+  const limit = options?.limit ?? 50
   const filter = options?.filter ?? ((item) => item.stars > 0)
-  const githubRepo = await getNpmPackageGithubRepo(target)
-
+  const githubRepo = target.includes("/")
+    ? target
+    : await getNpmPackageGithubRepo(target)
+  const finalResult: DependentInfo[] = []
   let currentParseResult: ParseResult = {
     result: [],
     nextUrl: `https://github.com/${githubRepo}/network/dependents`,
   }
-  const finalResult: DependentInfo[] = []
-  while (currentParseResult.nextUrl) {
+  let maxPage = options?.maxPage ?? 100
+  while (currentParseResult.nextUrl && maxPage-- > 0) {
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
   }
