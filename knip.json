@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@3/schema.json",
+  "entry": ["src/index.ts", "src/index.test.ts"],
+  "project": ["**/*.ts"],
+  "ignoreBinaries": ["changelogithub"]
+}

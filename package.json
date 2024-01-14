@@ -1,0 +1,82 @@
+{
+  "name": "pkg-placeholder",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@8.14.1",
+  "description": "_description_",
+  "author": "Stephen Zhou <hi@hyoban.cc>",
+  "license": "MIT",
+  "homepage": "https://github.com/hyoban/pkg-placeholder#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyoban/pkg-placeholder.git"
+  },
+  "bugs": "https://github.com/hyoban/pkg-placeholder/issues",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/es/index.d.ts",
+        "default": "./dist/es/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/es/index.js",
+  "module": "./dist/es/index.js",
+  "types": "./dist/es/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./dist/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "simple-git-hooks": {
+    "pre-commit": "pnpm check"
+  },
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test -- run && pnpm knip && pnpm build && pnpm publint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint --max-warnings 0 .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "build": "bunchee",
+    "publint": "publint",
+    "knip": "knip",
+    "prepublishOnly": "pnpm check",
+    "changelog": "changelogen --output && prettier --write CHANGELOG.md && git add CHANGELOG.md",
+    "release": "bumpp --all --execute \"pnpm changelog\" && npm publish",
+    "dev": "bunchee -w",
+    "start": "tsx src/index.ts"
+  },
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "bumpp": "^9.2.1",
+    "bunchee": "^4.3.4",
+    "changelogen": "^0.5.5",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-unicorn": "^50.0.1",
+    "knip": "^3.13.1",
+    "prettier": "^3.1.1",
+    "publint": "^0.2.7",
+    "simple-git-hooks": "^2.9.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.3"
+  }
+}
