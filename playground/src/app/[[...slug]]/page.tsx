@@ -1,25 +1,40 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { DependentInfo, getDependents } from "izon"
-import { unstable_cache } from "next/cache"
+import { kv } from "@vercel/kv"
+import { DependentInfo, getDependents, ParseResult } from "izon"
 import { Suspense } from "react"
 
-const cachedGetDependents = unstable_cache(
-  async (packageName) => {
-    return await getDependents(packageName)
-  },
-  ["getDependents"],
-)
+import { DependentForm } from "./dependent-form"
 
-function DependentTable({ dependents }: { dependents: DependentInfo[] }) {
+const cachePrefix = "dependents-"
+
+function DependentTable({
+  dependents,
+  packageName,
+}: {
+  dependents: DependentInfo[]
+  packageName: string
+}) {
   return (
-    <Table>
+    <Table className="min-w-[30rem]">
+      <TableCaption>
+        <a
+          href={`https://github.com/${packageName}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          {packageName}
+        </a>
+        's dependents
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Repository</TableHead>
@@ -52,8 +67,18 @@ function DependentTable({ dependents }: { dependents: DependentInfo[] }) {
 }
 
 async function Dependents({ packageName }: { packageName: string }) {
-  const dependents = await cachedGetDependents(packageName)
-  return <DependentTable dependents={dependents.slice(0, 10)} />
+  const cached = await kv.get<ParseResult>(`${cachePrefix}${packageName}`)
+  if (cached) console.log(`Using cached result for ${packageName}`)
+  const dependents = await getDependents(packageName, {
+    resume: cached,
+  })
+  kv.set(`${cachePrefix}${packageName}`, dependents)
+  return (
+    <DependentTable
+      dependents={dependents.result.slice(0, 10)}
+      packageName={packageName}
+    />
+  )
 }
 
 export default function Page({
@@ -65,30 +90,26 @@ export default function Page({
   if (!slug || (slug.length !== 1 && slug.length !== 2)) {
     return (
       <>
-        <p className="text-xl text-muted-foreground">
+        <p className="text-xl text-muted-foreground text-center mb-10">
           Find package's dependents
         </p>
+        <DependentForm />
       </>
     )
   }
 
   const packageName = slug.join("/")
   return (
-    <>
-      <p className="text-xl text-muted-foreground">
-        Find what projects are using {packageName}
-      </p>
-      <div className="flex h-full w-full justify-center items-center">
-        <Suspense
-          fallback={
-            <div className="flex h-full w-full justify-center items-center">
-              <div className="i-lucide-loader-2 animate-spin" />
-            </div>
-          }
-        >
-          <Dependents packageName={packageName} />
-        </Suspense>
-      </div>
-    </>
+    <div className="flex h-full w-full justify-center items-center">
+      <Suspense
+        fallback={
+          <div className="flex h-full w-full justify-center items-center">
+            <div className="i-lucide-loader-2 animate-spin" />
+          </div>
+        }
+      >
+        <Dependents packageName={packageName} />
+      </Suspense>
+    </div>
   )
 }

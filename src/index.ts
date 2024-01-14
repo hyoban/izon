@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { load } from "cheerio"
 import { $fetch } from "ofetch"
 
@@ -85,25 +86,42 @@ export async function getDependents(
     limit?: number
     filter?: (item: DependentInfo) => boolean
     maxPage?: number
+    resume?: ParseResult | null
   },
 ) {
-  const limit = options?.limit ?? 50
+  const limit = options?.limit ?? 100
   const filter = options?.filter ?? ((item) => item.stars > 0)
+  let maxPage = options?.maxPage ?? 15
+  const progressCache = options?.resume
+
   const githubRepo = target.includes("/")
     ? target
     : await getNpmPackageGithubRepo(target)
-  const finalResult: DependentInfo[] = []
+
+  const hasCache = !!progressCache
+  if (hasCache) console.log(`use cache for ${githubRepo}`)
+
+  let finalResult: DependentInfo[] = hasCache ? progressCache.result : []
   let currentParseResult: ParseResult = {
     result: [],
-    nextUrl: `https://github.com/${githubRepo}/network/dependents`,
+    nextUrl: hasCache
+      ? progressCache.nextUrl
+      : `https://github.com/${githubRepo}/network/dependents`,
   }
-  let maxPage = options?.maxPage ?? 15
+
   while (currentParseResult.nextUrl && maxPage-- > 0) {
+    console.log(`parse ${currentParseResult.nextUrl}`)
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
   }
-  return finalResult
+
+  finalResult = finalResult
     .sort((a, b) => b.stars - a.stars)
     .filter((element) => filter(element))
     .slice(0, limit)
+
+  return {
+    result: finalResult,
+    nextUrl: currentParseResult.nextUrl,
+  }
 }
