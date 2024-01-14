@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { load } from "cheerio"
 import { $fetch } from "ofetch"
 
@@ -80,11 +79,10 @@ export async function getDependents(
 
   const limit = options?.limit ?? 100
   const filter = options?.filter ?? ((item) => item.stars > 0)
-  let maxPage = options?.maxPage ?? 15
+  let maxPage = options?.maxPage ?? 10
   const progressCache = options?.resume
 
   const hasCache = !!progressCache
-  if (hasCache) console.log(`use cache for ${target}`)
 
   let finalResult: DependentInfo[] = hasCache ? progressCache.result : []
   let currentParseResult: ParseResult = {
@@ -95,7 +93,6 @@ export async function getDependents(
   }
 
   while (currentParseResult.nextUrl && maxPage-- > 0) {
-    console.log(`parse ${currentParseResult.nextUrl}`)
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
   }

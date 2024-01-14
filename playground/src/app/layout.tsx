@@ -27,7 +27,15 @@ export default function RootLayout({
                 Izon
               </h1>
               <main className="flex-1">{children}</main>
-              <AppearanceSwitch />
+              <footer className="flex gap-4">
+                <AppearanceSwitch />
+                <a
+                  href="http://github.com/hyoban/izon"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="i-lucide-github"
+                />
+              </footer>
             </div>
           </Provider>
         </ThemeProvider>
