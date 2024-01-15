@@ -1,7 +1,7 @@
 {
   "name": "izon",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "pnpm@8.14.1",
   "description": "Find a github repository's dependents.",
   "author": "Stephen Zhou <hi@hyoban.cc>",

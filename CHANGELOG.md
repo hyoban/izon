@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.0.1...main
+
+[compare changes](https://github.com/hyoban/izon/compare/v0.0.1...main)
+
+### 💅 Refactors
+
+- Remove npm package support ([e4c6906](https://github.com/hyoban/izon/commit/e4c6906))
+
+### 📖 Documentation
+
+- Update description ([365f3fb](https://github.com/hyoban/izon/commit/365f3fb))
+
+### 🏡 Chore
+
+- Add github url ([fa50e5f](https://github.com/hyoban/izon/commit/fa50e5f))
+- Add example repository ([2029bd5](https://github.com/hyoban/izon/commit/2029bd5))
+- Fix mobile style ([22490f3](https://github.com/hyoban/izon/commit/22490f3))
+- Indicate more ([591b620](https://github.com/hyoban/izon/commit/591b620))
+
+### ❤️ Contributors
+
+- Stephen Zhou ([@hyoban](http://github.com/hyoban))
+
 ## ...main
 
 ### 🚀 Enhancements
