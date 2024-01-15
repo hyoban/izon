@@ -25,6 +25,24 @@ type RepositoryList = {
   avatarUrl: string
 }[]
 
+function RepositoryInfo({
+  repository,
+}: {
+  repository: RepositoryList[number]
+}) {
+  return (
+    <>
+      <Avatar className="size-6 mr-2">
+        <AvatarImage src={repository.avatarUrl} />
+        <AvatarFallback>
+          {repository.name.slice(0, 2).toUpperCase()}
+        </AvatarFallback>
+      </Avatar>
+      {repository.name}
+    </>
+  )
+}
+
 export function GitHubRepositorySelector() {
   const router = useRouter()
   const pathname = usePathname()
@@ -40,6 +58,7 @@ export function GitHubRepositorySelector() {
     },
   )
 
+  const currentRepository = repositoryList?.find((repo) => repo.name === value)
   React.useEffect(() => {
     setValue(pathname.slice(1))
   }, [pathname])
@@ -53,8 +72,11 @@ export function GitHubRepositorySelector() {
           aria-expanded={open}
           className="justify-between"
         >
-          {repositoryList?.find((repo) => repo.name === value)?.name ??
-            "Select GitHub repository"}
+          {currentRepository ? (
+            <RepositoryInfo repository={currentRepository} />
+          ) : (
+            "Select GitHub repository"
+          )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -78,13 +100,7 @@ export function GitHubRepositorySelector() {
                     router.push(`/${currentValue}`)
                   }}
                 >
-                  <Avatar className="size-6 mr-2">
-                    <AvatarImage src={repo.avatarUrl} />
-                    <AvatarFallback>
-                      {repo.name.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  {repo.name}
+                  <RepositoryInfo repository={repo} />
                 </CommandItem>
               ))}
             </CommandGroup>
