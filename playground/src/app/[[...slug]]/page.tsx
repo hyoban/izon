@@ -19,22 +19,27 @@ const cachePrefix = "dependents-"
 function DependentTable({
   dependents,
   packageName,
+  nextUrl,
 }: {
   dependents: DependentInfo[]
   packageName: string
+  nextUrl?: string
 }) {
   return (
     <Table className="md:min-w-[30rem]">
       <TableCaption>
-        <a
-          href={`https://github.com/${packageName}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline"
-        >
-          {packageName}
-        </a>
-        's dependents
+        <div className="flex flex-wrap items-center justify-center">
+          <a
+            href={`https://github.com/${packageName}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            {packageName}
+          </a>
+          's dependents.
+          {!!nextUrl && <> Still have more, refresh to fetch.</>}
+        </div>
       </TableCaption>
       <TableHeader>
         <TableRow>
@@ -77,6 +82,7 @@ async function Dependents({ packageName }: { packageName: string }) {
     <DependentTable
       dependents={dependents.result.slice(0, 10)}
       packageName={packageName}
+      nextUrl={dependents.nextUrl}
     />
   )
 }
@@ -87,7 +93,7 @@ async function ExampleRepository() {
     <div className="mt-6">
       {keys
         .filter((key) => key.includes("/"))
-        .slice(0, 5)
+        .slice(0, 10)
         .map((key) => {
           return (
             <Link

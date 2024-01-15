@@ -9,12 +9,13 @@ import { navigate } from "./navigate"
 function Submit() {
   const status = useFormStatus()
   return (
-    <>
-      {status.pending && <div className="i-lucide-loader-2 animate-spin"></div>}
-      <Button type="submit" className="mx-auto" disabled={status.pending}>
-        Search
-      </Button>
-    </>
+    <Button type="submit" className="mx-auto" disabled={status.pending}>
+      {status.pending ? (
+        <div className="i-lucide-loader-2 animate-spin" />
+      ) : (
+        "Search"
+      )}
+    </Button>
   )
 }
 
