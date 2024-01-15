@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -12,7 +11,6 @@ import { kv } from "@/lib/storage"
 import { cn } from "@/lib/utils"
 import { DependentInfo, getDependents, ParseResult } from "izon"
 import { revalidatePath } from "next/cache"
-import Link from "next/link"
 import { Suspense } from "react"
 
 const cachePrefix = "dependents-"
@@ -68,49 +66,11 @@ async function Dependents({ packageName }: { packageName: string }) {
     resume: cached,
   })
   kv.setItem(`${cachePrefix}${packageName}`, dependents)
-  revalidatePath("/")
   return (
     <DependentTable
       dependents={dependents.result.slice(0, 10)}
       nextUrl={dependents.nextUrl}
     />
-  )
-}
-
-async function CacheStatus({ repo }: { repo: string }) {
-  const cache = await kv.getItem<ParseResult>(`${cachePrefix}${repo}`)
-  return (
-    !cache?.nextUrl && (
-      <Badge variant="outline" className="shrink-0 h-min">
-        Ready
-      </Badge>
-    )
-  )
-}
-
-async function ExampleRepositoryList() {
-  const keys = await kv.getKeys()
-  const selectedKeys = keys
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 20)
-    .map((key) => key.replace(":", "/"))
-
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-[auto,auto] gap-4 items-center">
-      {selectedKeys.map((key) => {
-        const repo = key.slice(cachePrefix.length)
-        return (
-          <div className="flex gap-2 items-center max-sm:odd:hidden" key={key}>
-            <Link className="underline" href={`/${repo}`}>
-              {repo.length > 25 ? repo.split("/").at(-1) : repo}
-            </Link>
-            <Suspense>
-              <CacheStatus repo={repo} />
-            </Suspense>
-          </div>
-        )
-      })}
-    </div>
   )
 }
 
@@ -130,15 +90,9 @@ export default function Page({
 }) {
   if (!slug || slug.length !== 2) {
     return (
-      <div className="space-y-6">
-        <p className="text-xl text-muted-foreground text-center">
-          Find a github repository's dependents.
-        </p>
-
-        <Suspense fallback={<Loading />}>
-          <ExampleRepositoryList />
-        </Suspense>
-      </div>
+      <p className="text-xl text-muted-foreground text-center">
+        Find a github repository's dependents.
+      </p>
     )
   }
 
