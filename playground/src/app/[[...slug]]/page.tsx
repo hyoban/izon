@@ -91,22 +91,21 @@ async function Dependents({ packageName }: { packageName: string }) {
 
 async function ExampleRepository() {
   const keys = await kv.keys(`${cachePrefix}*`)
+  const selectedKeys = keys.sort(() => Math.random() - 0.5).slice(0, 20)
+
   return (
-    <div className="mt-6">
-      {keys
-        .filter((key) => key.includes("/"))
-        .slice(0, 10)
-        .map((key) => {
-          return (
-            <Link
-              key={key}
-              className="my-2 underline block"
-              href={`/${key.slice(cachePrefix.length)}`}
-            >
-              {key.slice(cachePrefix.length)}
-            </Link>
-          )
-        })}
+    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+      {selectedKeys.map((key) => {
+        return (
+          <Link
+            key={key}
+            className="my-2 underline block max-sm:odd:hidden"
+            href={`/${key.slice(cachePrefix.length)}`}
+          >
+            {key.slice(cachePrefix.length)}
+          </Link>
+        )
+      })}
     </div>
   )
 }
