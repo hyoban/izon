@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import { kv } from "@vercel/kv"
 import { DependentInfo, getDependents, ParseResult } from "izon"
+import { revalidatePath } from "next/cache"
 import Link from "next/link"
 import { Suspense } from "react"
 
@@ -78,6 +79,7 @@ async function Dependents({ packageName }: { packageName: string }) {
     resume: cached,
   })
   kv.set(`${cachePrefix}${packageName}`, dependents)
+  revalidatePath("/")
   return (
     <DependentTable
       dependents={dependents.result.slice(0, 10)}
