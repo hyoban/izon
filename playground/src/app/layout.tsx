@@ -1,6 +1,7 @@
 import "./globals.css"
 
 import { AppearanceSwitch } from "@/components/appearance-switch"
+import { Analytics } from "@vercel/analytics/react"
 import { Provider } from "jotai"
 import Link from "next/link"
 
@@ -46,6 +47,7 @@ export default function RootLayout({
             </div>
           </Provider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
