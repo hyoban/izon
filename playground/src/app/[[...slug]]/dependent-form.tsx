@@ -9,7 +9,7 @@ import { navigate } from "./navigate"
 function Submit() {
   const status = useFormStatus()
   return (
-    <Button type="submit" className="mx-auto" disabled={status.pending}>
+    <Button type="submit" disabled={status.pending}>
       {status.pending ? (
         <div className="i-lucide-loader-2 animate-spin" />
       ) : (
@@ -21,13 +21,16 @@ function Submit() {
 
 export function DependentForm() {
   return (
-    <form action={navigate} className="flex gap-4 items-center">
+    <form
+      action={navigate}
+      className="flex gap-4 items-center justify-center mx-auto"
+    >
       <Input
         placeholder="Input a github repo like user/repo"
         name="packageName"
         type="text"
         required
-        className="min-w-60"
+        className="w-60"
       />
       <Submit />
     </form>

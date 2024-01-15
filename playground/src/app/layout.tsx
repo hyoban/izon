@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className="h-full bg-background overflow-auto">
         <ThemeProvider>
           <Provider>
-            <div className="h-full p-4 sm:p-8 flex flex-col gap-6 items-center max-w-xl mx-auto">
+            <div className="h-full p-4 sm:p-8 flex flex-col gap-6 items-center max-w-xl xl:max-w-2xl mx-auto">
               <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                 <Link href="/">Izon</Link>
               </h1>
@@ -39,7 +39,7 @@ export default function RootLayout({
                     className="i-lucide-github"
                   />
                 </div>
-                <footer className="opacity-50 text-sm text-center">
+                <footer className="opacity-50 text-sm text-center text-balance">
                   As we can not fetch a github repository's dependents at once,
                   so the Dependents Table may be incomplete.
                 </footer>

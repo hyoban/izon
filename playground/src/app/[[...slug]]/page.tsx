@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -60,7 +61,9 @@ function DependentTable({
                   rel="noopener noreferrer"
                   className="underline"
                 >
-                  {dependent.repository}
+                  {dependent.repository.length > 25
+                    ? dependent.repository.split("/").at(-1)
+                    : dependent.repository}
                 </a>
               </TableCell>
               <TableCell>{dependent.stars}</TableCell>
@@ -92,18 +95,25 @@ async function Dependents({ packageName }: { packageName: string }) {
 async function ExampleRepository() {
   const keys = await kv.keys(`${cachePrefix}*`)
   const selectedKeys = keys.sort(() => Math.random() - 0.5).slice(0, 20)
+  const cached = await Promise.all(
+    selectedKeys.map((key) => kv.get<ParseResult>(key)),
+  )
 
   return (
-    <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-4">
-      {selectedKeys.map((key) => {
+    <div className="mt-6 grid grid-cols-1 sm:grid-cols-[auto,auto] gap-4 items-center">
+      {selectedKeys.map((key, index) => {
+        const repo = key.slice(cachePrefix.length)
         return (
-          <Link
-            key={key}
-            className="my-2 underline block max-sm:odd:hidden"
-            href={`/${key.slice(cachePrefix.length)}`}
-          >
-            {key.slice(cachePrefix.length)}
-          </Link>
+          <div className="flex gap-2 items-center max-sm:odd:hidden" key={key}>
+            <Link className="underline" href={`/${repo}`}>
+              {repo.length > 25 ? repo.split("/").at(-1) : repo}
+            </Link>
+            {!cached[index]?.nextUrl && (
+              <Badge variant="outline" className="shrink-0 h-min">
+                Ready
+              </Badge>
+            )}
+          </div>
         )
       })}
     </div>
@@ -115,7 +125,6 @@ export default function Page({
 }: {
   params: { slug?: string[] }
 }) {
-  console.log(slug)
   if (!slug || slug.length !== 2) {
     return (
       <>
@@ -133,8 +142,9 @@ export default function Page({
     <div className="flex h-full w-full justify-center items-center">
       <Suspense
         fallback={
-          <div className="flex h-full w-full justify-center items-center">
+          <div className="flex h-full w-full justify-center items-center gap-2">
             <div className="i-lucide-loader-2 animate-spin" />
+            Fetching...
           </div>
         }
       >
