@@ -22,6 +22,9 @@ function DependentTable({
   dependents: DependentInfo[]
   nextUrl?: string
 }) {
+  if (dependents.length === 0) {
+    return <p className="text-xl text-muted-foreground">No dependents found.</p>
+  }
   return (
     <Table className="md:min-w-[30rem]">
       {!!nextUrl && (

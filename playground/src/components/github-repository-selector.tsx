@@ -76,8 +76,10 @@ export function GitHubRepositorySelector() {
         >
           {currentRepository ? (
             <RepositoryInfo repository={currentRepository} />
+          ) : !!value ? (
+            value
           ) : (
-            value ?? "Select GitHub repository"
+            "Select GitHub repository"
           )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -97,7 +99,6 @@ export function GitHubRepositorySelector() {
                   key={repo.name}
                   value={repo.name}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
                     setOpen(false)
                     router.push(`/${currentValue}`)
                   }}
