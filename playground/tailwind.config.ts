@@ -76,7 +76,11 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), iconsPlugin({ scale: 1.5 })],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("tailwindcss-animate"),
+    iconsPlugin({ scale: 1.5 }),
+  ],
 } satisfies Config
 
 export default config
