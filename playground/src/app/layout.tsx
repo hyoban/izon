@@ -12,7 +12,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Izon",
-  description: "Find a github repository's dependents.",
+  description: "Find a GitHub repository's dependents.",
 }
 
 export default function RootLayout({
@@ -42,10 +42,6 @@ export default function RootLayout({
               </div>
               <GitHubRepositorySelector />
               <main className="flex-1">{children}</main>
-              <footer className="opacity-50 text-sm text-center text-balance">
-                As we can not fetch a GitHub repository's dependents at once, so
-                the Dependents Table may be incomplete.
-              </footer>
             </div>
           </Provider>
         </ThemeProvider>

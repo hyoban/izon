@@ -7,7 +7,7 @@
 [![License][license-src]][license-href]
 [![code style: prettier][code-style-src]][code-style-href]
 
-Find a github repository's dependents.
+Find a GitHub repository's dependents.
 
 ## License
 
