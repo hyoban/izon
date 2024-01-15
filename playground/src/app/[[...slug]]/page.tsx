@@ -91,7 +91,7 @@ export default function Page({
   if (!slug || slug.length !== 2) {
     return (
       <p className="text-xl text-muted-foreground text-center">
-        Find a github repository's dependents.
+        Find a GitHub repository's dependents.
       </p>
     )
   }

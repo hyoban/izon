@@ -43,7 +43,7 @@ export default function RootLayout({
               <GitHubRepositorySelector />
               <main className="flex-1">{children}</main>
               <footer className="opacity-50 text-sm text-center text-balance">
-                As we can not fetch a github repository's dependents at once, so
+                As we can not fetch a GitHub repository's dependents at once, so
                 the Dependents Table may be incomplete.
               </footer>
             </div>
