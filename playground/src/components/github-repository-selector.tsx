@@ -77,7 +77,7 @@ export function GitHubRepositorySelector() {
           {currentRepository ? (
             <RepositoryInfo repository={currentRepository} />
           ) : (
-            "Select GitHub repository"
+            value ?? "Select GitHub repository"
           )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
