@@ -30,17 +30,19 @@ function DependentTable({
   return (
     <Table className="md:min-w-[30rem]">
       <TableCaption>
-        <div className="flex flex-wrap items-center justify-center">
-          <a
-            href={`https://github.com/${packageName}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            {packageName}
-          </a>
-          's dependents.
-          {!!nextUrl && <> Still have more, refresh to fetch.</>}
+        <div className="flex flex-wrap items-center justify-center text-balance">
+          <span>
+            <a
+              href={`https://github.com/${packageName}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              {packageName}
+            </a>
+            's dependents.
+          </span>
+          {!!nextUrl && <span> Still have more, refresh to fetch.</span>}
         </div>
       </TableCaption>
       <TableHeader>
