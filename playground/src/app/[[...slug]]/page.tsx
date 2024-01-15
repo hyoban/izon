@@ -15,8 +15,6 @@ import { revalidatePath } from "next/cache"
 import Link from "next/link"
 import { Suspense } from "react"
 
-import { DependentForm } from "./dependent-form"
-
 const cachePrefix = "dependents-"
 
 function DependentTable({
@@ -152,7 +150,7 @@ export default function Page({
         <p className="text-xl text-muted-foreground text-center">
           Find a github repository's dependents.
         </p>
-        <DependentForm />
+
         <Suspense fallback={<Loading />}>
           <ExampleRepositoryList />
         </Suspense>
