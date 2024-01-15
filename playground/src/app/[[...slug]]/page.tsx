@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { kv } from "@/lib/storage"
+import { cn } from "@/lib/utils"
 import { DependentInfo, getDependents, ParseResult } from "izon"
 import { revalidatePath } from "next/cache"
 import Link from "next/link"
@@ -94,33 +95,48 @@ async function Dependents({ packageName }: { packageName: string }) {
   )
 }
 
-async function ExampleRepository() {
+async function CacheStatus({ repo }: { repo: string }) {
+  const cache = await kv.getItem<ParseResult>(`${cachePrefix}${repo}`)
+  return (
+    !cache?.nextUrl && (
+      <Badge variant="outline" className="shrink-0 h-min">
+        Ready
+      </Badge>
+    )
+  )
+}
+
+async function ExampleRepositoryList() {
   const keys = await kv.getKeys()
   const selectedKeys = keys
     .sort(() => Math.random() - 0.5)
     .slice(0, 20)
     .map((key) => key.replace(":", "/"))
-  const cached = await Promise.all(
-    selectedKeys.map((key) => kv.getItem<ParseResult>(key)),
-  )
 
   return (
-    <div className="mt-6 grid grid-cols-1 sm:grid-cols-[auto,auto] gap-4 items-center">
-      {selectedKeys.map((key, index) => {
+    <div className="grid grid-cols-1 sm:grid-cols-[auto,auto] gap-4 items-center">
+      {selectedKeys.map((key) => {
         const repo = key.slice(cachePrefix.length)
         return (
           <div className="flex gap-2 items-center max-sm:odd:hidden" key={key}>
             <Link className="underline" href={`/${repo}`}>
               {repo.length > 25 ? repo.split("/").at(-1) : repo}
             </Link>
-            {!cached[index]?.nextUrl && (
-              <Badge variant="outline" className="shrink-0 h-min">
-                Ready
-              </Badge>
-            )}
+            <Suspense>
+              <CacheStatus repo={repo} />
+            </Suspense>
           </div>
         )
       })}
+    </div>
+  )
+}
+
+function Loading({ className }: { className?: string }) {
+  return (
+    <div className={cn("flex gap-2", className)}>
+      <div className="i-lucide-loader-2 animate-spin" />
+      Fetching...
     </div>
   )
 }
@@ -132,27 +148,22 @@ export default function Page({
 }) {
   if (!slug || slug.length !== 2) {
     return (
-      <>
-        <p className="text-xl text-muted-foreground text-center mb-10">
+      <div className="space-y-6">
+        <p className="text-xl text-muted-foreground text-center">
           Find a github repository's dependents.
         </p>
         <DependentForm />
-        <ExampleRepository />
-      </>
+        <Suspense fallback={<Loading />}>
+          <ExampleRepositoryList />
+        </Suspense>
+      </div>
     )
   }
 
   const packageName = slug.join("/")
   return (
     <div className="flex h-full w-full justify-center items-center">
-      <Suspense
-        fallback={
-          <div className="flex h-full w-full justify-center items-center gap-2">
-            <div className="i-lucide-loader-2 animate-spin" />
-            Fetching...
-          </div>
-        }
-      >
+      <Suspense fallback={<Loading />}>
         <Dependents packageName={packageName} />
       </Suspense>
     </div>
