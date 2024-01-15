@@ -57,8 +57,10 @@ export function GitHubRepositorySelector() {
       return fetch(`/api?q=${query}`).then((res) => res.json())
     },
   )
+  const currentRepository = repositoryList?.find(
+    (repo) => repo.name.toLowerCase() === value.toLowerCase(),
+  )
 
-  const currentRepository = repositoryList?.find((repo) => repo.name === value)
   React.useEffect(() => {
     setValue(pathname.slice(1))
   }, [pathname])
