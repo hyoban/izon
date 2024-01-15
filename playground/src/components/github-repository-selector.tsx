@@ -91,7 +91,6 @@ export function GitHubRepositorySelector() {
             value={search}
             onValueChange={setSearch}
           />
-          <CommandEmpty>No results</CommandEmpty>
           {repositoryList && repositoryList?.length > 0 && (
             <CommandGroup>
               {repositoryList?.map((repo) => (
