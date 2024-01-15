@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { kv } from "@vercel/kv"
+import { kv } from "@/lib/storage"
 import { DependentInfo, getDependents, ParseResult } from "izon"
 import { revalidatePath } from "next/cache"
 import Link from "next/link"
@@ -79,11 +79,11 @@ function DependentTable({
 }
 
 async function Dependents({ packageName }: { packageName: string }) {
-  const cached = await kv.get<ParseResult>(`${cachePrefix}${packageName}`)
+  const cached = await kv.getItem<ParseResult>(`${cachePrefix}${packageName}`)
   const dependents = await getDependents(packageName, {
     resume: cached,
   })
-  kv.set(`${cachePrefix}${packageName}`, dependents)
+  kv.setItem(`${cachePrefix}${packageName}`, dependents)
   revalidatePath("/")
   return (
     <DependentTable
@@ -95,10 +95,13 @@ async function Dependents({ packageName }: { packageName: string }) {
 }
 
 async function ExampleRepository() {
-  const keys = await kv.keys(`${cachePrefix}*`)
-  const selectedKeys = keys.sort(() => Math.random() - 0.5).slice(0, 20)
+  const keys = await kv.getKeys()
+  const selectedKeys = keys
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 20)
+    .map((key) => key.replace(":", "/"))
   const cached = await Promise.all(
-    selectedKeys.map((key) => kv.get<ParseResult>(key)),
+    selectedKeys.map((key) => kv.getItem<ParseResult>(key)),
   )
 
   return (
