@@ -36,16 +36,7 @@ export function GitHubRepositorySelector() {
   const { data: repositoryList } = useSWR<RepositoryList>(
     !!search ? search : value,
     async (query: string) => {
-      return fetch(
-        `https://api.github.com/search/repositories?per_page=5&q=${query}`,
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          return res.items.map((item: any) => ({
-            name: item.full_name,
-            avatarUrl: item.owner.avatar_url,
-          }))
-        })
+      return fetch(`/api?q=${query}`).then((res) => res.json())
     },
   )
 
