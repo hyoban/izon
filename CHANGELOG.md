@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.3...main
+
+[compare changes](https://github.com/hyoban/izon/compare/v0.0.3...main)
+
+### 🩹 Fixes
+
+- Make cli work ([dc4ff49](https://github.com/hyoban/izon/commit/dc4ff49))
+
+### ❤️ Contributors
+
+- Stephen Zhou ([@hyoban](http://github.com/hyoban))
+
 ## v0.0.2...main
 
 [compare changes](https://github.com/hyoban/izon/compare/v0.0.2...main)
