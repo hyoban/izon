@@ -10,7 +10,6 @@ import {
 import { kv } from "@/lib/storage"
 import { cn } from "@/lib/utils"
 import { DependentInfo, getDependents, ParseResult } from "izon"
-import { revalidatePath } from "next/cache"
 import { Suspense } from "react"
 
 const cachePrefix = "dependents-"
