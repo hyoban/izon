@@ -1,4 +1,5 @@
 import { load } from "cheerio"
+import { consola } from "consola"
 import { $fetch } from "ofetch"
 
 export type DependentInfo = {
@@ -63,6 +64,7 @@ export type CliOptions = {
 export type GetDependentsOptions = CliOptions & {
   filter?: (item: DependentInfo) => boolean
   resume?: ParseResult | null
+  silent?: boolean
 }
 
 export async function getDependents(
@@ -77,8 +79,9 @@ export async function getDependents(
 
   const limit = options?.limit ?? 100
   const filter = options?.filter ?? ((item) => item.stars > 0)
-  let maxPage = options?.maxPage ?? 10
+  const maxPage = options?.maxPage ?? 10
   const progressCache = options?.resume
+  const enableConsole = !options?.silent
 
   const hasCache = !!progressCache
 
@@ -90,9 +93,18 @@ export async function getDependents(
       : `https://github.com/${target}/network/dependents`,
   }
 
-  while (currentParseResult.nextUrl && maxPage-- > 0) {
+  if (enableConsole) {
+    consola.start(`Start to parse ${target}`)
+  }
+
+  let currentPage = 1
+  while (currentParseResult.nextUrl && currentPage <= maxPage) {
+    if (enableConsole) {
+      consola.info(`Parsing page ${currentPage}`)
+    }
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
+    currentPage++
   }
 
   finalResult = finalResult

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { consola } from "consola"
 import { hideBin } from "yargs/helpers"
 import yargs from "yargs/yargs"
 
@@ -16,16 +17,26 @@ async function main() {
       type: "number",
       default: 10,
     })
+    .option("silent", {
+      alias: "s",
+      type: "boolean",
+      default: false,
+    })
     .parse()
 
   const targets = argv._.map(String)
 
   for (const target of targets) {
-    const { result } = await getDependents(target, {
-      limit: argv.limit,
-      maxPage: argv.maxPage,
-    })
-    console.table(result)
+    try {
+      const { result } = await getDependents(target, {
+        limit: argv.limit,
+        maxPage: argv.maxPage,
+        silent: argv.silent,
+      })
+      console.table(result)
+    } catch (error) {
+      consola.error(error)
+    }
   }
 }
 
