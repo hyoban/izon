@@ -15,7 +15,7 @@ async function main() {
     .option("timeout", {
       alias: "t",
       type: "number",
-      default: 9000,
+      default: 8000,
     })
     .option("silent", {
       alias: "s",

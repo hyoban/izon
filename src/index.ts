@@ -79,7 +79,7 @@ export async function getDependents(
 
   const limit = options?.limit ?? 100
   const filter = options?.filter ?? ((item) => item.stars > 0)
-  const timeout = options?.timeout ?? 9000
+  const timeout = options?.timeout ?? 8000
   const progressCache = options?.resume
   const enableConsole = !options?.silent
 
