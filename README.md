@@ -1,4 +1,4 @@
-# izon
+<img src='https://s2.loli.net/2024/01/16/4gli63wCVyLKUcS.png' width='300'>
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
@@ -8,6 +8,12 @@
 [![code style: prettier][code-style-src]][code-style-href]
 
 Find a GitHub repository's dependents.
+
+## Usage
+
+```sh
+npx izon huozhi/bunchee
+```
 
 ## License
 
