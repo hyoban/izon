@@ -58,7 +58,7 @@ export async function parseDependents(url: string): Promise<ParseResult> {
 
 export type CliOptions = {
   limit?: number
-  maxPage?: number
+  timeout?: number
 }
 
 export type GetDependentsOptions = CliOptions & {
@@ -79,7 +79,7 @@ export async function getDependents(
 
   const limit = options?.limit ?? 100
   const filter = options?.filter ?? ((item) => item.stars > 0)
-  const maxPage = options?.maxPage ?? 10
+  const timeout = options?.timeout ?? 9000
   const progressCache = options?.resume
   const enableConsole = !options?.silent
 
@@ -97,20 +97,25 @@ export async function getDependents(
     consola.start(`Start to parse ${target}`)
   }
 
-  let currentPage = 1
-  while (currentParseResult.nextUrl && currentPage <= maxPage) {
+  const startTime = Date.now()
+  while (currentParseResult.nextUrl && Date.now() - startTime < timeout) {
     if (enableConsole) {
-      consola.info(`Parsing page ${currentPage}`)
+      consola.info(
+        `Parsing page ${currentParseResult.nextUrl.split("?").at(-1)}`,
+      )
     }
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
-    currentPage++
   }
 
   finalResult = finalResult
     .sort((a, b) => b.stars - a.stars)
     .filter((element) => filter(element))
     .slice(0, limit)
+
+  if (currentParseResult.nextUrl) {
+    consola.info("Exceed timeout, stop parsing")
+  }
 
   return {
     result: finalResult,

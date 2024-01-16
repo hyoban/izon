@@ -12,10 +12,10 @@ async function main() {
       type: "number",
       default: 10,
     })
-    .option("maxPage", {
-      alias: "m",
+    .option("timeout", {
+      alias: "t",
       type: "number",
-      default: 10,
+      default: 9000,
     })
     .option("silent", {
       alias: "s",
@@ -30,7 +30,7 @@ async function main() {
     try {
       const { result } = await getDependents(target, {
         limit: argv.limit,
-        maxPage: argv.maxPage,
+        timeout: argv.timeout,
         silent: argv.silent,
       })
       console.table(result)
