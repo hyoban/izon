@@ -105,6 +105,10 @@ function Introduction() {
         in the Dependents Table. It will continue to fetch data as you browse
         until it is complete.
       </p>
+      <p>
+        You can also use <code>npx izon user/repo</code> to get the dependents
+        locally.
+      </p>
     </article>
   )
 }
