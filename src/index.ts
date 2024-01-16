@@ -1,13 +1,6 @@
 import { load } from "cheerio"
 import { $fetch } from "ofetch"
 
-export interface NpmPackageInfo {
-  repository: {
-    type: string
-    url: string
-  }
-}
-
 export type DependentInfo = {
   repository: string
   stars: number
@@ -62,14 +55,19 @@ export async function parseDependents(url: string): Promise<ParseResult> {
   }
 }
 
+export type CliOptions = {
+  limit?: number
+  maxPage?: number
+}
+
+export type GetDependentsOptions = CliOptions & {
+  filter?: (item: DependentInfo) => boolean
+  resume?: ParseResult | null
+}
+
 export async function getDependents(
   target: string,
-  options?: {
-    limit?: number
-    filter?: (item: DependentInfo) => boolean
-    maxPage?: number
-    resume?: ParseResult | null
-  },
+  options?: GetDependentsOptions,
 ) {
   const user = target.split("/")[0]
   const repo = target.split("/")[1]

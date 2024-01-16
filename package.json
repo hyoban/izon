@@ -14,6 +14,9 @@
   "bugs": "https://github.com/hyoban/izon/issues",
   "keywords": [],
   "sideEffects": false,
+  "bin": {
+    "index": "./dist/bin/index.js"
+  },
   "exports": {
     ".": {
       "import": {
@@ -62,25 +65,27 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
-    "@types/node": "^20.11.0",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
+    "@types/node": "^20.11.3",
+    "@types/yargs": "^17.0.32",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
     "bumpp": "^9.2.1",
-    "bunchee": "^4.3.4",
+    "bunchee": "^4.4.0",
     "changelogen": "^0.5.5",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-unicorn": "^50.0.1",
-    "knip": "^3.13.1",
-    "prettier": "^3.1.1",
+    "knip": "^3.13.2",
+    "prettier": "^3.2.2",
     "publint": "^0.2.7",
     "simple-git-hooks": "^2.9.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.3"
+    "vitest": "^1.2.0"
   },
   "dependencies": {
     "cheerio": "1.0.0-rc.12",
-    "ofetch": "^1.3.3"
+    "ofetch": "^1.3.3",
+    "yargs": "^17.7.2"
   }
 }

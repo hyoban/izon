@@ -42,7 +42,7 @@ export default [
       "@typescript-eslint/consistent-type-exports": "error",
       "@typescript-eslint/no-import-type-side-effects": "error",
 
-      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-console": ["warn", { allow: ["warn", "error", "table"] }],
 
       "no-restricted-syntax": [
         "error",
