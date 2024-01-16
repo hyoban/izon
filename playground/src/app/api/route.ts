@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs"
 import { kv } from "@/lib/storage"
 
 export const dynamic = "force-dynamic"
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
     `https://api.github.com/search/repositories?per_page=5&q=${query}`,
     {
       headers: {
-        Authorization: `token ${process.env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
       },
     },
   )
