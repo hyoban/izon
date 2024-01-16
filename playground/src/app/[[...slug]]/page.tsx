@@ -17,9 +17,11 @@ const cachePrefix = "dependents-"
 function DependentTable({
   dependents,
   nextUrl,
+  loading,
 }: {
   dependents: DependentInfo[]
   nextUrl?: string
+  loading?: boolean
 }) {
   if (dependents.length === 0) {
     return <p className="text-xl text-muted-foreground">No dependents found.</p>
@@ -27,7 +29,10 @@ function DependentTable({
   return (
     <Table className="md:min-w-[30rem]">
       {!!nextUrl && (
-        <TableCaption> Still have more, refresh to fetch. </TableCaption>
+        <TableCaption>
+          {" "}
+          Still have more, {loading ? "fetching..." : "refresh to fetch."}
+        </TableCaption>
       )}
       <TableHeader>
         <TableRow>
@@ -62,8 +67,13 @@ function DependentTable({
   )
 }
 
-async function Dependents({ packageName }: { packageName: string }) {
-  const cached = await kv.getItem<ParseResult>(`${cachePrefix}${packageName}`)
+async function DependentsRealtime({
+  packageName,
+  cached,
+}: {
+  packageName: string
+  cached?: ParseResult | null
+}) {
   const dependents = await getDependents(packageName, {
     resume: cached,
   })
@@ -73,6 +83,28 @@ async function Dependents({ packageName }: { packageName: string }) {
       dependents={dependents.result.slice(0, 10)}
       nextUrl={dependents.nextUrl}
     />
+  )
+}
+
+async function Dependents({ packageName }: { packageName: string }) {
+  const cached = await kv.getItem<ParseResult>(`${cachePrefix}${packageName}`)
+
+  return (
+    <Suspense
+      fallback={
+        cached ? (
+          <DependentTable
+            dependents={cached.result.slice(0, 10)}
+            nextUrl={cached.nextUrl}
+            loading
+          />
+        ) : (
+          <Loading />
+        )
+      }
+    >
+      <DependentsRealtime packageName={packageName} cached={cached} />
+    </Suspense>
   )
 }
 
