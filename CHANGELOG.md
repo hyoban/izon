@@ -1,5 +1,37 @@
 # Changelog
 
+## v0.0.4...main
+
+[compare changes](https://github.com/hyoban/izon/compare/v0.0.4...main)
+
+### 🚀 Enhancements
+
+- Log progress ([214e2b6](https://github.com/hyoban/izon/commit/214e2b6))
+- Category option and count summary ([055599e](https://github.com/hyoban/izon/commit/055599e))
+
+### 🩹 Fixes
+
+- Init with cache ([e74de65](https://github.com/hyoban/izon/commit/e74de65))
+
+### 💅 Refactors
+
+- Use timeout instead of maxpage ([0e37944](https://github.com/hyoban/izon/commit/0e37944))
+
+### 📖 Documentation
+
+- Update README.md ([947be09](https://github.com/hyoban/izon/commit/947be09))
+
+### 🏡 Chore
+
+- Add npx note ([627d45a](https://github.com/hyoban/izon/commit/627d45a))
+- Update timeout ([44a97eb](https://github.com/hyoban/izon/commit/44a97eb))
+- Display cache first ([01eaf48](https://github.com/hyoban/izon/commit/01eaf48))
+- Show summary ([76f429d](https://github.com/hyoban/izon/commit/76f429d))
+
+### ❤️ Contributors
+
+- Stephen Zhou ([@hyoban](http://github.com/hyoban))
+
 ## v0.0.3...main
 
 [compare changes](https://github.com/hyoban/izon/compare/v0.0.3...main)
