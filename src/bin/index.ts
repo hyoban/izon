@@ -22,17 +22,27 @@ async function main() {
       type: "boolean",
       default: false,
     })
+    .option("category", {
+      alias: "c",
+      type: "string",
+      default: "repository" as const,
+      choices: ["repository", "package"] as const,
+    })
     .parse()
 
   const targets = argv._.map(String)
 
   for (const target of targets) {
     try {
-      const { result } = await getDependents(target, {
+      const { result, total } = await getDependents(target, {
         limit: argv.limit,
         timeout: argv.timeout,
         silent: argv.silent,
+        category: argv.category,
       })
+      consola.success(
+        `${target} Dependents Summary: ${total.repositories} repositories, ${total.packages} packages`,
+      )
       console.table(result)
     } catch (error) {
       consola.error(error)

@@ -11,6 +11,10 @@ export type DependentInfo = {
 export type ParseResult = {
   nextUrl?: string
   result: DependentInfo[]
+  total: {
+    repositories: number
+    packages: number
+  }
 }
 
 function toNumber(value?: string): number {
@@ -21,6 +25,19 @@ function toNumber(value?: string): number {
 export async function parseDependents(url: string): Promise<ParseResult> {
   const html = await $fetch<string>(url)
   const $ = load(html)
+  const totalRepositories = toNumber(
+    $(`#dependents .Box-header .btn-link[href*="dependent_type=REPOSITORY"]`)
+      .text()
+      .trim()
+      .split(" ")[0],
+  )
+  const totalPackages = toNumber(
+    $(`#dependents .Box-header .btn-link[href*="dependent_type=PACKAGE"]`)
+      .text()
+      .trim()
+      .split(" ")[0],
+  )
+
   const dependentDomList = $(
     "#dependents .Box [data-test-id='dg-repo-pkg-dependent']",
   )
@@ -53,24 +70,29 @@ export async function parseDependents(url: string): Promise<ParseResult> {
   return {
     result: dependentList,
     nextUrl,
+    total: {
+      repositories: totalRepositories,
+      packages: totalPackages,
+    },
   }
 }
 
 export type CliOptions = {
   limit?: number
   timeout?: number
+  silent?: boolean
+  category?: "repository" | "package"
 }
 
 export type GetDependentsOptions = CliOptions & {
   filter?: (item: DependentInfo) => boolean
   resume?: ParseResult | null
-  silent?: boolean
 }
 
 export async function getDependents(
   target: string,
   options?: GetDependentsOptions,
-) {
+): Promise<ParseResult> {
   const user = target.split("/")[0]
   const repo = target.split("/")[1]
   if (!user || !repo) {
@@ -82,6 +104,7 @@ export async function getDependents(
   const timeout = options?.timeout ?? 8000
   const progressCache = options?.resume
   const enableConsole = !options?.silent
+  const category = options?.category
 
   const hasCache = !!progressCache
 
@@ -90,7 +113,13 @@ export async function getDependents(
     result: [],
     nextUrl: hasCache
       ? progressCache.nextUrl
-      : `https://github.com/${target}/network/dependents`,
+      : `https://github.com/${target}/network/dependents${
+          category ? `?dependent_type=${category.toUpperCase()}` : ""
+        }`,
+    total: {
+      repositories: 0,
+      packages: 0,
+    },
   }
 
   if (enableConsole) {
@@ -106,12 +135,16 @@ export async function getDependents(
     }
     currentParseResult = await parseDependents(currentParseResult.nextUrl)
     finalResult.push(...currentParseResult.result)
+    finalResult = finalResult
+      .filter(
+        (element, index, array) =>
+          array.findIndex((item) => item.repository === element.repository) ===
+          index,
+      )
+      .sort((a, b) => b.stars - a.stars)
+      .filter((element) => filter(element))
+      .slice(0, limit)
   }
-
-  finalResult = finalResult
-    .sort((a, b) => b.stars - a.stars)
-    .filter((element) => filter(element))
-    .slice(0, limit)
 
   if (currentParseResult.nextUrl) {
     consola.info("Exceed timeout, stop parsing")
@@ -120,5 +153,6 @@ export async function getDependents(
   return {
     result: finalResult,
     nextUrl: currentParseResult.nextUrl,
+    total: currentParseResult.total,
   }
 }
