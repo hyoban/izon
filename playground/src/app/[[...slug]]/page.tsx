@@ -15,55 +15,68 @@ import { Suspense } from "react"
 const cachePrefix = "dependents-"
 
 function DependentTable({
-  dependents,
-  nextUrl,
+  parseResult: { result: dependents, nextUrl, total },
   loading,
+  packageName,
 }: {
-  dependents: DependentInfo[]
-  nextUrl?: string
+  parseResult: ParseResult
   loading?: boolean
+  packageName: string
 }) {
   if (dependents.length === 0) {
     return <p className="text-xl text-muted-foreground">No dependents found.</p>
   }
   return (
-    <Table className="md:min-w-[30rem]">
-      {!!nextUrl && (
-        <TableCaption>
-          {" "}
-          Still have more, {loading ? "fetching..." : "refresh to fetch."}
-        </TableCaption>
-      )}
-      <TableHeader>
-        <TableRow>
-          <TableHead>Repository</TableHead>
-          <TableHead>Stars</TableHead>
-          <TableHead>Forks</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {dependents.map((dependent) => {
-          return (
-            <TableRow key={dependent.repository}>
-              <TableCell>
-                <a
-                  href={`https://github.com/${dependent.repository}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  {dependent.repository.length > 25
-                    ? dependent.repository.split("/").at(-1)
-                    : dependent.repository}
-                </a>
-              </TableCell>
-              <TableCell>{dependent.stars}</TableCell>
-              <TableCell>{dependent.forks}</TableCell>
-            </TableRow>
-          )
-        })}
-      </TableBody>
-    </Table>
+    <div className="space-y-2">
+      <p className="text-center text-sm opacity-60">
+        {`${total.repositories} repositories and ${total.packages} packages depend on `}
+        <a
+          href={`https://github.com/${packageName}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          {packageName}
+        </a>
+      </p>
+      <Table className="md:min-w-[30rem]">
+        {!!nextUrl && (
+          <TableCaption>
+            {" "}
+            Still have more, {loading ? "fetching..." : "refresh to fetch."}
+          </TableCaption>
+        )}
+        <TableHeader>
+          <TableRow>
+            <TableHead>Repository</TableHead>
+            <TableHead>Stars</TableHead>
+            <TableHead>Forks</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {dependents.map((dependent) => {
+            return (
+              <TableRow key={dependent.repository}>
+                <TableCell>
+                  <a
+                    href={`https://github.com/${dependent.repository}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline"
+                  >
+                    {dependent.repository.length > 25
+                      ? dependent.repository.split("/").at(-1)
+                      : dependent.repository}
+                  </a>
+                </TableCell>
+                <TableCell>{dependent.stars}</TableCell>
+                <TableCell>{dependent.forks}</TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </div>
   )
 }
 
@@ -80,8 +93,11 @@ async function DependentsRealtime({
   kv.setItem(`${cachePrefix}${packageName}`, dependents)
   return (
     <DependentTable
-      dependents={dependents.result.slice(0, 10)}
-      nextUrl={dependents.nextUrl}
+      parseResult={{
+        ...dependents,
+        result: dependents.result.slice(0, 10),
+      }}
+      packageName={packageName}
     />
   )
 }
@@ -94,8 +110,11 @@ async function Dependents({ packageName }: { packageName: string }) {
       fallback={
         cached ? (
           <DependentTable
-            dependents={cached.result.slice(0, 10)}
-            nextUrl={cached.nextUrl}
+            parseResult={{
+              ...cached,
+              result: cached.result.slice(0, 10),
+            }}
+            packageName={packageName}
             loading
           />
         ) : (

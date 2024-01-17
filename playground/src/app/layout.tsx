@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className="h-full bg-background overflow-auto">
         <ThemeProvider>
           <Provider>
-            <div className="h-full p-4 sm:p-8 flex flex-col gap-6 items-center max-w-xl xl:max-w-2xl mx-auto">
+            <div className="h-full p-4 sm:p-8 flex flex-col gap-4 items-center max-w-xl xl:max-w-2xl mx-auto">
               <div className="flex gap-4 items-center">
                 <Link href="/">
                   <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
