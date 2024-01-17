@@ -117,8 +117,8 @@ export async function getDependents(
           category ? `?dependent_type=${category.toUpperCase()}` : ""
         }`,
     total: {
-      repositories: 0,
-      packages: 0,
+      repositories: hasCache ? progressCache.total.repositories : 0,
+      packages: hasCache ? progressCache.total.packages : 0,
     },
   }
 

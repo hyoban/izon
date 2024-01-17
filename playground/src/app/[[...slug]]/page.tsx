@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 import { kv } from "@/lib/storage"
 import { cn } from "@/lib/utils"
-import { DependentInfo, getDependents, ParseResult } from "izon"
+import { getDependents, ParseResult } from "izon"
 import { Suspense } from "react"
 
 const cachePrefix = "dependents-"
