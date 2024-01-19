@@ -1,12 +1,12 @@
+"use server"
+
+import { RepositoryList } from "@/components/github-repository-selector"
 import { env } from "@/env.mjs"
 import { kv } from "@/lib/storage"
 
-export const dynamic = "force-dynamic"
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const query = searchParams.get("q")
-
+export async function queryRepositoryList(
+  query?: string,
+): Promise<RepositoryList> {
   // return history
   if (!query) {
     const repositoryList = (await kv.getKeys())
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
       // random select 5
       .sort(() => Math.random() - 0.5)
       .slice(0, 5)
-    return Response.json(repositoryList)
+    return repositoryList
   }
 
   const repositoryList = await fetch(
@@ -36,5 +36,5 @@ export async function GET(request: Request) {
         avatarUrl: item.owner.avatar_url,
       }))
     })
-  return Response.json(repositoryList)
+  return repositoryList
 }

@@ -1,9 +1,9 @@
 "use client"
 
+import { queryRepositoryList } from "@/app/actions"
 import { Button } from "@/components/ui/button"
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -20,7 +20,7 @@ import useSWR from "swr"
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
-type RepositoryList = {
+export type RepositoryList = {
   name: string
   avatarUrl: string
 }[]
@@ -51,9 +51,11 @@ export function GitHubRepositorySelector() {
 
   const [value, setValue] = React.useState(pathname.slice(1))
   const [search, setSearch] = React.useState("")
-  const { data: repositoryList } = useSWR<RepositoryList>(
-    `/api?q=${search ? search : value}`,
-    async (url: string) => fetch(url).then((res) => res.json()),
+  const { data: repositoryList } = useSWR(
+    ["query-repository", search ? search : value],
+    async ([, value]: [string, string]) => {
+      return await queryRepositoryList(value)
+    },
   )
   const currentRepository = repositoryList?.find(
     (repo) => repo.name.toLowerCase() === value.toLowerCase(),
