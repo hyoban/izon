@@ -139,7 +139,9 @@ function Loading({ className }: { className?: string }) {
 function Introduction() {
   return (
     <article className="prose prose-neutral dark:prose-invert">
-      <h2 className="text-center">Find a GitHub repository's dependents</h2>
+      <h2 className="text-center">
+        Find a GitHub repository&apos;s dependents
+      </h2>
       <p>
         GitHub provides a Dependency graph feature to view the dependents of a
         repository. The address is like{" "}
@@ -152,9 +154,9 @@ function Introduction() {
       <p>
         So I wrote Izon, a small tool that summarizes projects that rely on this
         repository by extracting relevant information from web pages. But since
-        we can't get all the data in one request, dependents data may be missing
-        in the Dependents Table. It will continue to fetch data as you browse
-        until it is complete.
+        we can&apos;t get all the data in one request, dependents data may be
+        missing in the Dependents Table. It will continue to fetch data as you
+        browse until it is complete.
       </p>
       <p>
         You can also use <code>npx izon user/repo</code> to get the dependents

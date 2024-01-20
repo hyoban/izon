@@ -53,9 +53,7 @@ export function GitHubRepositorySelector() {
   const [search, setSearch] = React.useState("")
   const { data: repositoryList } = useSWR(
     ["query-repository", search ? search : value],
-    async ([, value]: [string, string]) => {
-      return await queryRepositoryList(value)
-    },
+    ([, value]: [string, string]) => queryRepositoryList(value),
   )
   const currentRepository = repositoryList?.find(
     (repo) => repo.name.toLowerCase() === value.toLowerCase(),
