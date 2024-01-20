@@ -179,7 +179,7 @@ export default function Page({
 
   const packageName = slug.join("/")
   return (
-    <div className="flex h-full w-full justify-center items-center">
+    <div className="flex size-full justify-center items-center">
       <Suspense fallback={<Loading />}>
         <Dependents packageName={packageName} />
       </Suspense>

@@ -1,6 +1,7 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended"],
   "rules": {
-    "@next/next/no-html-link-for-pages": ["off", "packages/my-app/pages/"]
+    "@next/next/no-html-link-for-pages": "off",
+    "tailwindcss/classnames-order": "off"
   }
 }

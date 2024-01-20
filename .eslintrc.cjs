@@ -1,3 +1,5 @@
+const path = require("path")
+
 module.exports = {
   extends: [
     "eslint:recommended",
@@ -12,6 +14,12 @@ module.exports = {
   root: true,
   ignorePatterns: ["*.js", "*.cjs", "*.mjs", "dist"],
   reportUnusedDisableDirectives: true,
+  settings: {
+    tailwindcss: {
+      callees: ["classnames", "clsx", "ctl", "cn"],
+      config: path.join(__dirname, "playground/tailwind.config.ts"),
+    },
+  },
   rules: {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
