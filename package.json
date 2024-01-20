@@ -47,7 +47,7 @@
     "pre-commit": "pnpm check"
   },
   "scripts": {
-    "prepare": "simple-git-hooks",
+    "prepare": "simple-git-hooks && pnpm build",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test -- run && pnpm build && pnpm publint && pnpm attw",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
