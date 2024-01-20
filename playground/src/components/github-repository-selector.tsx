@@ -74,7 +74,7 @@ export function GitHubRepositorySelector() {
         >
           {currentRepository ? (
             <RepositoryInfo repository={currentRepository} />
-          ) : !!value ? (
+          ) : value ? (
             value
           ) : (
             "Select GitHub repository"
@@ -89,9 +89,9 @@ export function GitHubRepositorySelector() {
             value={search}
             onValueChange={setSearch}
           />
-          {repositoryList && repositoryList?.length > 0 && (
+          {repositoryList && repositoryList.length > 0 && (
             <CommandGroup>
-              {repositoryList?.map((repo) => (
+              {repositoryList.map((repo) => (
                 <CommandItem
                   key={repo.name}
                   value={repo.name}

@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/table"
 import { kv } from "@/lib/storage"
 import { cn } from "@/lib/utils"
-import { getDependents, ParseResult } from "izon"
+import { getDependents } from "izon"
 import { Suspense } from "react"
+
+import type { ParseResult } from "izon"
 
 const cachePrefix = "dependents-"
 
@@ -90,7 +92,7 @@ async function DependentsRealtime({
   const dependents = await getDependents(packageName, {
     resume: cached,
   })
-  kv.setItem(`${cachePrefix}${packageName}`, dependents)
+  await kv.setItem(`${cachePrefix}${packageName}`, dependents)
   return (
     <DependentTable
       parseResult={{
