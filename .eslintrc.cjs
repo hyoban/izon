@@ -12,11 +12,6 @@ module.exports = {
   root: true,
   ignorePatterns: ["*.js", "*.cjs", "*.mjs", "dist"],
   reportUnusedDisableDirectives: true,
-  settings: {
-    next: {
-      rootDir: "playground",
-    },
-  },
   rules: {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
