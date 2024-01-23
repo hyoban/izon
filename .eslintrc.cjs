@@ -9,7 +9,11 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ["./tsconfig.json", "./playground/tsconfig.json"],
+    project: [
+      "./tsconfig.json",
+      "./playground/tsconfig.json",
+      "./playground-waku/tsconfig.json",
+    ],
   },
   root: true,
   ignorePatterns: ["*.js", "*.cjs", "*.mjs", "dist"],
