@@ -1,4 +1,8 @@
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+"use client"
+
+import { Provider } from "jotai"
+
+function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <>
       <script
@@ -16,5 +20,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       ></script>
       {children}
     </>
+  )
+}
+
+export const Providers = ({ children }: React.PropsWithChildren) => {
+  return (
+    <ThemeProvider>
+      <Provider>{children}</Provider>
+    </ThemeProvider>
   )
 }

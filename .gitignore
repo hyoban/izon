@@ -9,3 +9,8 @@ lib-cov
 logs
 node_modules
 temp
+
+.next
+
+# local env files
+.env*.local

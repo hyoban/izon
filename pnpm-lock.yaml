@@ -220,6 +220,9 @@ importers:
       jotai-effect:
         specifier: 0.2.3
         version: 0.2.3(jotai@2.6.2)
+      jotai-location:
+        specifier: ^0.5.2
+        version: 0.5.2(jotai@2.6.2)
       lucide-react:
         specifier: ^0.312.0
         version: 0.312.0(react@18.3.0-canary-b30030471-20240117)
@@ -232,6 +235,9 @@ importers:
       react-server-dom-webpack:
         specifier: 18.3.0-canary-b30030471-20240117
         version: 18.3.0-canary-b30030471-20240117(react-dom@18.3.0-canary-b30030471-20240117)(react@18.3.0-canary-b30030471-20240117)(webpack@5.89.0)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       swr:
         specifier: ^2.2.4
         version: 2.2.4(react@18.3.0-canary-b30030471-20240117)
@@ -6253,7 +6259,7 @@ packages:
       jotai: '>=2.5.0'
       jotai-effect: ^0.2.3
     dependencies:
-      jotai: 2.6.2(@types/react@18.2.48)(react@18.2.0)
+      jotai: 2.6.2(@types/react@18.2.48)(react@18.3.0-canary-b30030471-20240117)
       jotai-effect: 0.2.3(jotai@2.6.2)
     dev: false
 
@@ -6262,7 +6268,15 @@ packages:
     peerDependencies:
       jotai: '>=2.4.3'
     dependencies:
-      jotai: 2.6.2(@types/react@18.2.48)(react@18.2.0)
+      jotai: 2.6.2(@types/react@18.2.48)(react@18.3.0-canary-b30030471-20240117)
+    dev: false
+
+  /jotai-location@0.5.2(jotai@2.6.2):
+    resolution: {integrity: sha512-4S9hDh1wYp4SG4Laq3+Xd0GdW7jwnWlbEuL8U22kv3wUZW892n6gXlNhwU0LaoXnWoGG0gtjSLBuFm5iodFKLg==}
+    peerDependencies:
+      jotai: '>=1.11.0'
+    dependencies:
+      jotai: 2.6.2(@types/react@18.2.48)(react@18.3.0-canary-b30030471-20240117)
     dev: false
 
   /jotai@2.6.2(@types/react@18.2.48)(react@18.2.0):
