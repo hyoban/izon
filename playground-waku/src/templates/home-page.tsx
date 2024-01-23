@@ -1,3 +1,9 @@
+import { Button } from "@/components/ui/button"
+
 export function HomePage() {
-  return <div>hi</div>
+  return (
+    <div>
+      <Button>hi</Button>
+    </div>
+  )
 }
