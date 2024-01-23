@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import { iconsPlugin } from "@egoist/tailwindcss-icons"
+
+import type { Config } from "tailwindcss"
+
+const config = {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -73,5 +76,11 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("tailwindcss-animate"),
+    iconsPlugin({ scale: 1.5 }),
+  ],
+} satisfies Config
+
+export default config
